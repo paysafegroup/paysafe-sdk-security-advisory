@@ -73,95 +73,44 @@ For React Native integrations, the official Paysafe Developer documentation inst
 
 # Detection
 
-This repository provides ready-to-use detection scripts that implement the checks described below.
+This repository provides a ready-to-use detection script that checks for the reported malicious package names.
 
 Repository structure:
 
 ```
 scripts/
-├── check-npm-packages.sh
-├── check-python-packages.py
-├── check-lockfiles.sh
-└── check-python-lockfiles.sh
+└── check-all.sh
 ```
 
 ---
 
 
 
-## Detecting Fake npm Packages
+## Quick Check (Recommended)
 
-Run the following from the root of each JavaScript or TypeScript project, including application repositories, shared libraries, deployment tooling, and CI build images.
+Run the combined script from the root of each project, monorepo package, or CI workspace you want to scan. It performs all four checks in one step:
 
-```bash
-chmod +x scripts/check-npm-packages.sh
-
-./scripts/check-npm-packages.sh
-```
-
-The script checks for all publicly reported malicious npm package names within the project's dependency tree.
-
-If your organization uses monorepos or workspaces, execute the script from the repository root and within any package directories that manage dependencies independently.
-
----
-
-
-
-## Detecting Fake Python Packages
-
-Run the Python detection script inside every Python virtual environment, container image, CI image and development environment used to build or deploy your integration.
+- installed npm packages
+- npm lockfiles and manifests
+- installed Python packages
+- Python lockfiles and manifests
 
 ```bash
-python scripts/check-python-packages.py
+chmod +x scripts/check-all.sh
+
+./scripts/check-all.sh
 ```
 
-The script checks installed Python packages for the publicly reported malicious package names.
+The script performs all checks in one step:
 
----
+- **Installed npm packages** — checks the project's dependency tree for all reported malicious npm package names
+- **npm lockfiles and manifests** — scans `package.json`, `package-lock.json`, `npm-shrinkwrap.json`, `yarn.lock`, and `pnpm-lock.yaml`
+- **Installed Python packages** — checks the active Python environment for all reported malicious PyPI package names
+- **Python lockfiles and manifests** — scans `requirements*.txt`, `pyproject.toml`, `poetry.lock`, `Pipfile`, `Pipfile.lock`, `setup.py`, and `setup.cfg`
 
+The script exits with code `1` if any reported package name is found, and `0` if none are detected. It skips checks when the relevant tool or files are not present (for example, if npm or Python is not installed).
 
-
-## Checking Lockfiles and Dependency Manifests
-
-The repository also provides helper scripts for scanning dependency manifests and lockfiles without installing dependencies.
-
-### npm
-
-```bash
-chmod +x scripts/check-lockfiles.sh
-
-./scripts/check-lockfiles.sh
-```
-
-The script scans:
-
-- package.json
-- package-lock.json
-- npm-shrinkwrap.json
-- yarn.lock
-- pnpm-lock.yaml
-
-
-
-### Python
-
-```bash
-chmod +x scripts/check-python-lockfiles.sh
-
-./scripts/check-python-lockfiles.sh
-```
-
-The script scans:
-
-- requirements*.txt
-- pyproject.toml
-- poetry.lock
-- Pipfile
-- Pipfile.lock
-- setup.py
-- setup.cfg
-
-If your project uses multiple repositories, workspaces or monorepos, run the relevant script from each repository root.
+If your organization uses monorepos or workspaces, run the script from each repository root and within any package directories that manage dependencies independently. For Python projects, run the script inside every virtual environment, container image, CI image, and development environment used to build or deploy your integration.
 
 ---
 
@@ -276,13 +225,10 @@ merchant-security-tools/
 ├── README.md
 │
 └── scripts/
-    ├── check-npm-packages.sh
-    ├── check-python-packages.py
-    ├── check-lockfiles.sh
-    └── check-python-lockfiles.sh
+    └── check-all.sh
 ```
 
-The scripts in this repository are **read-only detection utilities**. They perform local dependency checks and do not upload project information or communicate with external services.
+The script in this repository is a **read-only detection utility**. It performs local dependency checks and does not upload project information or communicate with external services.
 
 ---
 
@@ -290,6 +236,6 @@ The scripts in this repository are **read-only detection utilities**. They perfo
 
 # Disclaimer
 
-This repository contains detection utilities for the package names publicly reported as malicious at the time this advisory was published.
+This repository contains a detection utility for the package names publicly reported as malicious at the time this advisory was published.
 
-These scripts are intended to assist merchants in identifying potential exposure and should be used alongside existing endpoint protection, software composition analysis (SCA), dependency scanning and incident response processes.
+This script is intended to assist merchants in identifying potential exposure and should be used alongside existing endpoint protection, software composition analysis (SCA), dependency scanning and incident response processes.
