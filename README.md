@@ -1,9 +1,5 @@
 # Security Advisory: Fake Paysafe, Skrill and Neteller SDK Packages on npm and PyPI
 
-**Date:** 9 July 2026  
-**Audience:** Paysafe, Skrill and Neteller merchants, developers, platform partners, and integration teams  
-**Severity:** Action required for merchants who may have installed the listed packages
-
 ---
 
 ## Summary
@@ -86,7 +82,7 @@ scripts/
 
 
 
-## Quick Check (Recommended)
+## Recommended Fix
 
 Run the combined script from the root of each project, monorepo package, or CI workspace you want to scan. It performs all four checks in one step:
 
@@ -220,7 +216,7 @@ Summary of remediation actions already completed:
 # Repository Contents
 
 ```
-merchant-security-tools/
+paysafe-sdk-security-advisory/
 │
 ├── README.md
 │
