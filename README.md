@@ -1,17 +1,12 @@
 # Security Advisory: Fake Paysafe, Skrill and Neteller SDK Packages on npm and PyPI
 
----
-
 ## Summary
 
 Paysafe is aware of public reporting about fake SDK packages published to npm and PyPI using Paysafe, Skrill and Neteller-related names. According to the report, these packages were malicious and were designed to steal credentials, access tokens and environment information from developer workstations and CI/CD environments.
 
-There is **no indication** from the public report that Paysafe, Skrill, Neteller, or Paysafe-operated systems were breached. This advisory is intended to help merchants determine whether their own development, build or deployment environments may have been exposed through installation of malicious third-party packages.
+There is **no indication** from the public report that Paysafe, Skrill, Neteller, or Paysafe-operated systems were breached. This advisory is intended to help merchants determine whether their own development, build or deployment environments may have been exposed through the installation of malicious third-party packages.
 
 Merchants should only install SDKs, libraries and integration components that are linked from the official Paysafe Developer documentation or published under verified Paysafe-owned package namespaces.
-
----
-
 
 
 ## Affected Fake Package Names
@@ -47,9 +42,6 @@ paysafe-sdk
 paysafe-api
 ```
 
----
-
-
 
 ## Official Installation Guidance
 
@@ -63,9 +55,6 @@ or from verified Paysafe-owned package namespaces referenced by the official doc
 
 For React Native integrations, the official Paysafe Developer documentation installs packages from the `@paysafe/` npm namespace. Unscoped packages using Paysafe, Skrill or Neteller-related names should **not** be assumed to be official unless they are explicitly referenced by the Paysafe documentation.
 
----
-
-
 
 # Detection
 
@@ -77,10 +66,6 @@ Repository structure:
 scripts/
 └── check-all.sh
 ```
-
----
-
-
 
 ## Recommended Fix
 
@@ -107,10 +92,6 @@ The script performs all checks in one step:
 The script exits with code `1` if any reported package name is found, and `0` if none are detected. It skips checks when the relevant tool or files are not present (for example, if npm or Python is not installed).
 
 If your organization uses monorepos or workspaces, run the script from each repository root and within any package directories that manage dependencies independently. For Python projects, run the script inside every virtual environment, container image, CI image, and development environment used to build or deploy your integration.
-
----
-
-
 
 # Immediate Actions if a Package is Detected
 
@@ -156,10 +137,6 @@ python -m pip uninstall paysafe-kyc paysafe-payments paysafe-sdk paysafe-api
   Do not simply uninstall the package and continue using the same workstation, container image or virtual environment.
 7. Monitor API usage and account activity for unexpected authentication attempts, unusual API requests or configuration changes.
 
----
-
-
-
 # Recommended Safe Integration Practices
 
 To reduce the risk of dependency confusion, typosquatting, or malicious package installation:
@@ -174,10 +151,6 @@ To reduce the risk of dependency confusion, typosquatting, or malicious package 
 - **Disable or control install scripts where practical.** For npm, consider using `--ignore-scripts` in CI where your build process allows it, or explicitly allow only required install scripts.
 - **Scan dependency trees regularly.** Include direct and transitive dependency checks in CI and software composition analysis tooling.
 - **Keep secrets out of repositories and logs.** Use a secret manager, avoid printing environment variables in CI, and enable secret scanning for repositories and build logs.
-
----
-
-
 
 # Support
 
@@ -209,10 +182,6 @@ Summary of remediation actions already completed:
 
 **Do not include API keys, passwords, access tokens, private keys or customer payment data in support requests.**
 
----
-
-
-
 # Repository Contents
 
 ```
@@ -225,10 +194,6 @@ paysafe-sdk-security-advisory/
 ```
 
 The script in this repository is a **read-only detection utility**. It performs local dependency checks and does not upload project information or communicate with external services.
-
----
-
-
 
 # Disclaimer
 
